@@ -248,6 +248,7 @@ class DeliteInaSetup(Screen, ConfigListScreen):
             self.list.append(ina_system1)
             self['config'].list = self.list
             self['config'].l.setList(self.list)
+        return
 
     def saveIna(self):
         if fileExists('/usr/bin/inadyn_script.sh'):
