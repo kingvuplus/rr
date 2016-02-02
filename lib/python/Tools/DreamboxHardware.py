@@ -1,3 +1,4 @@
+#Patched by Sodo
 from fcntl import ioctl
 from struct import pack, unpack
 
