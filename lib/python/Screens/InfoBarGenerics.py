@@ -456,6 +456,8 @@ class InfoBarNumberZap:
 		if number == 0:
 			if isinstance(self, InfoBarPiP) and self.pipHandles0Action():
 				self.pipDoHandle0Action()
+			elif len(self.servicelist.history) > 1:
+				self.checkTimeshiftRunning(self.recallPrevService)	
 			else:
 #Blackhole
 				if config.misc.delitepanicb.value:
@@ -554,10 +556,18 @@ class InfoBarChannelSelection:
 		self.switchChannelDown()
 
 	def historyBack(self):
-		self.servicelist.historyBack()
+		self.checkTimeshiftRunning(self.historyBackCheckTimeshiftCallback)
+
+	def historyBackCheckTimeshiftCallback(self, answer):
+		if answer:
+			self.servicelist.historyBack()
 
 	def historyNext(self):
-		self.servicelist.historyNext()
+		self.checkTimeshiftRunning(self.historyNextCheckTimeshiftCallback)
+
+	def historyNextCheckTimeshiftCallback(self, answer):
+		if answer:
+			self.servicelist.historyNext()
 
 	def switchChannelUp(self):
 		self.servicelist.moveUp()
