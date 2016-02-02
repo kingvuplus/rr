@@ -84,12 +84,6 @@ class DeliteSettings(Screen):
             else:
                 from Plugins.Extensions.DLNABrowser.plugin import DLNADeviceBrowser
                 self.session.open(DLNADeviceBrowser)
-        elif self.sel == 18:
-            if not fileExists('/usr/bin/mediatomb'):
-                self.session.open(MessageBox, _('Please enable this application in BlackHole Speed Up panel to continue.'), MessageBox.TYPE_INFO)
-            else:
-                from BhNet import BhMediatomb
-                self.session.open(BhMediatomb)
         elif self.sel == 19:
             if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/DLNAServer/plugin.py'):
                 self.session.open(MessageBox, _('Please enable this application in BlackHole Speed Up panel to continue.'), MessageBox.TYPE_INFO)
@@ -221,12 +215,6 @@ class DeliteSettings(Screen):
         png = LoadPixmap(mypixmap)
         name = _('UPnP Client Djmount')
         idx = 17
-        res = (name, png, idx)
-        self.list.append(res)
-        mypixmap = mypath + 'icons/infopanel_samba.png'
-        png = LoadPixmap(mypixmap)
-        name = _('UPnP Server Mediatomb')
-        idx = 18
         res = (name, png, idx)
         self.list.append(res)
         mypixmap = mypath + 'icons/infopanel_samba.png'
@@ -499,6 +487,7 @@ class DeliteSetupCronConf(Screen, ConfigListScreen):
         self.list.append(res)
         self['config'].list = self.list
         self['config'].l.setList(self.list)
+        return
 
     def checkentry(self):
         msg = ''
@@ -752,6 +741,7 @@ class Bp_UsbFormat(Screen):
         self.totalpartitions = 1
         self.totalsize = self.p1size = self.p2size = self.p3size = self.p4size = '0'
         self.canclose = True
+        return
 
     def stepOne(self):
         msg = _('Connect your usb storage to your Vu+ box\n')
@@ -782,6 +772,7 @@ class Bp_UsbFormat(Screen):
             msg = self.get_Deviceinfo(self.device)
             self['lab1'].setText(msg)
             self.step = 4
+        return
 
     def stepFour(self):
         myoptions = [['1', '1'],
@@ -805,6 +796,7 @@ class Bp_UsbFormat(Screen):
             self.session.openWithCallback(self.partSize3, InputBox, title=_('Enter the size in Megabyte of the second partition:'), windowTitle=_('Partition size'), text='1', useableChars='1234567890')
         else:
             self.writePartFile()
+        return
 
     def partSize3(self, psize):
         if psize is None:
@@ -814,35 +806,37 @@ class Bp_UsbFormat(Screen):
             self.session.openWithCallback(self.partSize4, InputBox, title=_('Enter the size in Megabyte of the third partition:'), windowTitle=_('Partition size'), text='1', useableChars='1234567890')
         else:
             self.writePartFile()
+        return
 
     def partSize4(self, psize):
         if psize is None:
             psize = '100'
         self.p3size = psize
         self.writePartFile()
+        return
 
     def writePartFile(self):
         p1 = p2 = p3 = p4 = '0'
         device = '/dev/' + self.device
-        out0 = '#!/bin/sh\n\nsfdisk %s -uM << EOF\n' % device
+        out0 = '#!/bin/sh\n\nsfdisk %s << EOF\n' % device
         msg = _('Total Megabyte Available: \t') + str(self.totalsize)
         msg += _('\nPartition scheme:\n')
         p1 = self.p1size
-        out1 = ',%s\n' % self.p1size
+        out1 = ',%sM\n' % self.p1size
         if self.totalpartitions == 1:
             p1 = str(self.totalsize)
             out1 = ';\n'
         msg += '%s1 \t size:%s M\n' % (device, p1)
         if self.totalpartitions > 1:
             p2 = self.p2size
-            out2 = ',%s\n' % self.p2size
+            out2 = ',%sM\n' % self.p2size
             if self.totalpartitions == 2:
                 p2 = self.totalsize - int(self.p1size)
                 out2 = ';\n'
             msg += '%s2 \t size:%s M\n' % (device, p2)
         if self.totalpartitions > 2:
             p3 = self.p3size
-            out3 = ',%s\n' % self.p3size
+            out3 = ',%sM\n' % self.p3size
             if self.totalpartitions == 3:
                 p3 = self.totalsize - (int(self.p1size) + int(self.p2size))
                 out3 = ';\n'
@@ -874,6 +868,8 @@ class Bp_UsbFormat(Screen):
         self.canclose = False
         self['key_green'].hide()
         device = '/dev/%s' % self.device
+        cmd = 'umount -l ' + device + '1'
+        system(cmd)
         cmd = "echo -e 'Partitioning: %s \n\n'" % device
         cmd2 = '/tmp/sfdisk.tmp'
         self.session.open(Console, title=_('Partitioning...'), cmdlist=[cmd, cmd2], finishedCallback=self.partDone)
@@ -894,16 +890,18 @@ class Bp_UsbFormat(Screen):
     def choiceBoxFstypeCB(self, choice):
         if choice is None:
             return
-        newfstype = choice[1]
-        if newfstype == 'ext4':
-            self.formatcmd = '/sbin/mkfs.ext4 -F -O extent,flex_bg,large_file,uninit_bg -m1'
-        elif newfstype == 'ext3':
-            self.formatcmd = '/sbin/mkfs.ext3 -F -m0'
-        elif newfstype == 'ext2':
-            self.formatcmd = '/sbin/mkfs.ext2 -F -m0'
-        elif newfstype == 'vfat':
-            self.formatcmd = '/usr/sbin/mkfs.vfat'
-        self.do_Format()
+        else:
+            newfstype = choice[1]
+            if newfstype == 'ext4':
+                self.formatcmd = '/sbin/mkfs.ext4 -F -O extent,flex_bg,large_file,uninit_bg -m1'
+            elif newfstype == 'ext3':
+                self.formatcmd = '/sbin/mkfs.ext3 -F -m0'
+            elif newfstype == 'ext2':
+                self.formatcmd = '/sbin/mkfs.ext2 -F -m0'
+            elif newfstype == 'vfat':
+                self.formatcmd = '/usr/sbin/mkfs.vfat'
+            self.do_Format()
+            return
 
     def do_Format(self):
         os_remove('/tmp/sfdisk.tmp')
@@ -1113,7 +1111,7 @@ class BhSpeedUp(Screen, ConfigListScreen):
         self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'red': self.saveMypoints,
          'green': self.close,
          'back': self.close})
-        self.pluglist = [['MeoBoot', 'meoboot'],
+        self.pluglist = [['Sat>Ip', 'enigma2-plugin-extensions-satipclient'],
          ['BhWeather', 'bhweather'],
          ['BhFullBackup', 'bhfullbackup'],
          ['BhPersonalBackup', 'bhpersonalbackup'],
@@ -1135,15 +1133,14 @@ class BhSpeedUp(Screen, ConfigListScreen):
          ['WirelessAccessPoint', 'enigma2-plugin-systemplugins-wirelessaccesspoint'],
          ['DVDPlayer', 'enigma2-plugin-extensions-dvdplayer'],
          ['Dlna Browser (Djmount Client)', 'enigma2-plugin-extensions-dlnabrowser'],
-         ['MiniDlna UPnP Server', 'enigma2-plugin-extensions-dlnaserver'],
-         ['Mediatomb UPnP Server (alternative)', 'mediatomb']]
+         ['MiniDlna UPnP Server', 'enigma2-plugin-extensions-dlnaserver']]
         machine = nab_Detect_Machine()
+        if machine != 'vusolo4k':
+            self.pluglist.append(['OpenMultiBoot', 'enigma2-plugin-extensions-openmultiboot'])
         if machine == 'vusolo2':
             self.pluglist.append(['Web Manual (5.2 Mega)', 'vuplus-manual'])
-        if machine != 'vusolo':
+        if machine != 'vusolo' and machine != 'vusolo4k':
             self.pluglist.append(['Opera browser & HbbTV', 'enigma2-plugin-extensions-hbbtv'])
-        if machine == 'vusolo' or machine == 'bm750' or machine == 'vuuno':
-            self.pluglist.append(['Wmv, Wma, Asf media support', 'gst-ffmpeg'])
         self.activityTimer = eTimer()
         self.activityTimer.timeout.get().append(self.updateFeed2)
         self.updateFeed()
@@ -1177,7 +1174,7 @@ class BhSpeedUp(Screen, ConfigListScreen):
 
         self['config'].list = self.list
         self['config'].l.setList(self.list)
-        self['lab1'].setText(_("Please disable ALL the plugins you don't need to use.\nThis will Speed Up Image Performance."))
+        self['lab1'].setText(_("Please disable ALL the plugins you don't need to use.\nThis will Speed Up BlakHole Performance."))
 
     def checkInst(self, name):
         ret = False
