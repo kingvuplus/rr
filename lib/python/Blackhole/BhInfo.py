@@ -465,12 +465,13 @@ class DeliteInfo(Screen):
             f = open('/proc/cpuinfo', 'r')
             for line in f.readlines():
                 parts = line.strip().split(':')
-                strview = parts[0].strip()
-                strview2 = ''
-                if len(parts) == 3:
-                    strview2 = ' ' + parts[2]
-                mytext += strview + ':  ' + parts[1] + strview2 + '\n'
-                count += 1
+                if len(parts) > 1:
+                    strview = parts[0].strip()
+                    strview2 = ''
+                    if len(parts) == 3:
+                        strview2 = ' ' + parts[2]
+                    mytext += strview + ':  ' + parts[1] + strview2 + '\n'
+                    count += 1
                 if count == 9:
                     break
 
