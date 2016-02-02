@@ -14,6 +14,7 @@ class DeliteInterface:
 
     def __init__(self):
         self.session = None
+        return
 
     def setSession(self, session):
         self.session = session
@@ -53,6 +54,7 @@ class DeliteInterface:
                 elif cmd.find('popclose') == 0:
                     if self.pop.mystate == 1:
                         self.pop.hide()
+        return
 
     def reloadSettings(self):
         settings = eDVBDB.getInstance()
