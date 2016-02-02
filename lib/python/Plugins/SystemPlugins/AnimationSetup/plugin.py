@@ -9,6 +9,12 @@ from Plugins.Plugin import PluginDescriptor
 
 from enigma import setAnimation_current, setAnimation_speed
 
+# default = disabled
+g_default = {
+        "current": 1,
+        "speed"  : 20,
+}
+g_max_speed = 30
 
 g_animation_paused = False
 g_orig_show = None
