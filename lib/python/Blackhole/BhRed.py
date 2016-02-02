@@ -200,6 +200,7 @@ class BhRedPanel(Screen):
             self.session.open(BhUniverseConfig, self.config_univ)
         else:
             self.session.open(MessageBox, _('Sorry, wrong pin.'), MessageBox.TYPE_ERROR)
+        return
 
     def checkdesT(self):
         sel = self['list'].getCurrent()
@@ -225,6 +226,7 @@ class BhRedPanel(Screen):
             self.askjumpConfirm()
         else:
             self.session.open(MessageBox, _('Sorry, wrong pin.'), MessageBox.TYPE_ERROR)
+        return
 
     def askjumpConfirm(self):
         msg = _('We are going to jump into %s Universe.\nPlease remember that anything you do in this Universe, such as install sofware, skins or plugins will have no effect on the other Universes.\nAre you sure you want to jump?') % self.destination
