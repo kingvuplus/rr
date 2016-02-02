@@ -282,6 +282,7 @@ class DeliteEpgAddProvider(Screen, ConfigListScreen):
             self.list.append(res)
             self['config'].list = self.list
             self['config'].l.setList(self.list)
+        return
 
     def checkentry(self):
         msg = ''
@@ -970,6 +971,7 @@ class DeliteDownChannels(Screen):
         config.misc.deliteepgpop.save()
         self.onLayoutFinish.append(self.startShow)
         self.onClose.append(self.__onClose)
+        return
 
     def startShow(self):
         parts = nab_Get_EpgProvider(self.provider)
@@ -1018,6 +1020,7 @@ class DeliteDownEpgNow(Screen):
         config.misc.deliteepgpop.save()
         self.onLayoutFinish.append(self.startShow)
         self.onClose.append(self.__onClose)
+        return
 
     def startShow(self):
         self.activityTimer.start(10)
