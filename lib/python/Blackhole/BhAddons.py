@@ -15,7 +15,7 @@ from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import fileExists, pathExists, createDir
 from os import system, listdir, chdir, getcwd, remove as os_remove
 from urllib2 import Request, urlopen, URLError, HTTPError
-from BhUtils import nab_strip_html, DeliteGetSkinPath  
+from BhUtils import nab_strip_html, DeliteGetSkinPath
 from operator import itemgetter
 config.bhaddons = ConfigSubsection()
 config.bhaddons.lock = ConfigYesNo(default=False)
@@ -101,6 +101,7 @@ class DeliteAddons(Screen):
             self.KeyOk()
         else:
             self.session.open(MessageBox, _('Sorry, wrong pin.'), MessageBox.TYPE_ERROR)
+        return
 
     def KeyOk(self):
         self.sel = self['list'].getCurrent()
@@ -236,17 +237,11 @@ class Nab_downArea(Screen):
         self['list'].list = self.list
 
     def KeyOk(self):
-#       bh_version = BhU_get_Version()
-#       bh_version = int(bh_version.replace('.', ''))
-#       pluginver = 'Plugins'
-#       catver = 'outcat10_2'
-#       if bh_version > 199:
         pluginver = 'Plugins2'
         catver = 'outcat10_3'
         self.sel = self['list'].getCurrent()
         if self.sel:
             self.sel = self.sel[2]
-#       box = nab_Detect_Machine()
         self.url = 'http://www.vuplus-community.net/bhaddons/index.php?op=outcat&cat=Cams'
         self.title = 'Buuuuu'
         if self.sel == 1:
@@ -258,9 +253,6 @@ class Nab_downArea(Screen):
         elif self.sel == 3:
             self.url = 'http://www.vuplus-community.net/bhaddons/index.php?op=outcat&cat=Skins'
             self.title = 'Black Hole Skins'
-#           if box.find('dm') != -1:
-#               self.url = 'http://www.vuplus-community.net/bhaddons/index.php?op=outcat&cat=Dreambox-Skins'
-#               self.title = 'Black Hole Dreambox Skins'
         elif self.sel == 4:
             self.url = 'http://www.vuplus-community.net/bhaddons/index.php?op=outcat&cat=Scripts'
             self.title = 'Black Hole Scripts'
@@ -280,8 +272,7 @@ class Nab_downArea(Screen):
         if fileExists(downfile):
             os_remove(downfile)
         if self.url == 'feeds':
-            from Screens.PluginBrowser import PluginDownloadBrowser
-            self.session.open(PluginDownloadBrowser)
+            self.session.open(Nab_downFeedCat)
         else:
             self.session.openWithCallback(self.connectionDone, Nab_ConnectPop, self.url, downfile)
 
@@ -1039,7 +1030,7 @@ class Bh_Feed_Settings2(Screen):
                         continue
                     out.write(line)
 
-            f.close()
+                f.close()
             out.close()
             rc = system('crontab /etc/bhcron/bh.cron -c /etc/bhcron/')
             self.done_message = _('Package %s removed.') % self.installed
