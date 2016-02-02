@@ -77,6 +77,7 @@ class DeliteGreenPanel(Screen):
 
         self.list = sorted(mylist, key=itemgetter(4))
         self['list'].list = self.list
+        return
 
     def Addons(self):
         self.session.open(DeliteAddons)
@@ -230,6 +231,7 @@ class DeliteSetupFp(Screen):
             self.list.append(res)
 
         self['list'].list = self.list
+        return
 
     def save(self):
         mysel = self['list'].getCurrent()
