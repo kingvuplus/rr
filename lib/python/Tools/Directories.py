@@ -1,3 +1,4 @@
+#Patched by Sodo
 # -*- coding: utf-8 -*-
 import os
 from os import mkdir, rmdir, system, walk, stat as os_stat, listdir, readlink, makedirs, error as os_error, symlink, access, F_OK, R_OK, W_OK, rename as os_rename
