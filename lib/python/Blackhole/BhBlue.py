@@ -15,7 +15,6 @@ from os import system, listdir, chdir, getcwd, rename as os_rename
 from BhEpgPanel import DeliteEpgPanel
 from BhSettings import DeliteSettings
 from BhInfo import DeliteInfo
-#from BhUtils import BhU_get_Version, BhU_check_proc_version
 import socket
 config.delite = ConfigSubsection()
 config.delite.fp = ConfigText(default='')
@@ -151,21 +150,20 @@ class DeliteBluePanel(Screen):
             mytext = '\n\n    ' + _('Ecm Info not available.')
         self['activecam'].setText(curCamname)
         self['Ecmtext'].setText(mytext)
+        return
 
     def getServiceInfoValue(self, what, myserviceinfo):
         if myserviceinfo is None:
             return ''
-        v = myserviceinfo.getInfo(what)
-        if v == -2:
-            v = myserviceinfo.getInfoString(what)
-        elif v == -1:
-            v = 'N/A'
-        return v
+        else:
+            v = myserviceinfo.getInfo(what)
+            if v == -2:
+                v = myserviceinfo.getInfoString(what)
+            elif v == -1:
+                v = 'N/A'
+            return v
 
     def keyOk(self):
-        m = self.checkKern()
-        if m != 1:
-            return
         self.sel = self['list'].getCurrent()
         self.newcam = self.camnames[self.sel]
         inme = open('/etc/BhCamConf', 'r')
@@ -186,27 +184,26 @@ class DeliteBluePanel(Screen):
         cmd = 'cp -f ' + self.newcam + ' /usr/bin/StartBhCam'
         system(cmd)
         mydata = 'STOP_CAMD,' + self.currentcam
-        client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        client_socket.connect('/tmp/Blackhole.socket')
-        client_socket.send(mydata)
-        client_socket.close()
-        mydata = 'NEW_CAMD,' + self.newcam
-        client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        client_socket.connect('/tmp/Blackhole.socket')
-        client_socket.send(mydata)
-        client_socket.close()
-        self.session.openWithCallback(self.myclose, Nab_DoStartCam, self.sel)
+        try:
+            client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            client_socket.connect('/tmp/Blackhole.socket')
+            client_socket.send(mydata)
+            client_socket.close()
+        except:
+            cmd = self.currentcam + ' stop'
+            system(cmd)
 
-#    def checkKern(self):
-#        mycheck = 0
-#        deversion = BhU_get_Version()
-#        if deversion == BhU_check_proc_version():
-#            mycheck = 1
-#        else:
-#            nobox = self.session.open(MessageBox, _('Sorry: Wrong image in flash found. You have to install in flash Black Hole image v.  ') + deversion, MessageBox.TYPE_INFO)
-#           nobox.setTitle(_('Info'))
-#           self.myclose()
-#       return mycheck
+        mydata = 'NEW_CAMD,' + self.newcam
+        try:
+            client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            client_socket.connect('/tmp/Blackhole.socket')
+            client_socket.send(mydata)
+            client_socket.close()
+        except:
+            cmd = self.newcamd + ' start'
+            system(cmd)
+
+        self.session.openWithCallback(self.myclose, Nab_DoStartCam, self.sel)
 
     def myclose(self):
         self.close()
@@ -367,6 +364,7 @@ class DeliteSetupAutocam(Screen, ConfigListScreen):
         self.list.append(res)
         self['config'].list = self.list
         self['config'].l.setList(self.list)
+        return
 
     def saveMyconf(self):
         check = True
