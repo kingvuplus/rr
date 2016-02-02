@@ -180,6 +180,8 @@ class Nab_ExtraInfobar(Screen):
                 self.my_timer_count = 0
                 self.__updateEmuInfo()
 
+        return
+
     def parse_caid_txt(self, caid):
         ret = ''
         caidnames = ['0100,01FF,Seca',
