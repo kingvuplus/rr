@@ -1031,7 +1031,7 @@ def mainCheckTimeshiftCallback(session, answer):
 		session.open(MediaPlayer)
 
 def main(session, **kwargs):
-	InfoBar.instance.checkTimeshiftRunning(boundFunction(mainCheckTimeshiftCallback, session))
+	session.open(MediaPlayer)
 
 def menu(menuid, **kwargs):
 	if menuid == "mainmenu" and config.mediaplayer.onMainMenu.getValue():
