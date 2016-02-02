@@ -22,12 +22,6 @@ class About(Screen):
 		bhRev = f.readline().strip()
 		f.close()
 		
-#		bhCod = "SODO"
-#		f = open("/etc/bhcoder",'r')
-#		bhVer = f.readline().strip()
-#		f.close()
-		
-
 		self["EnigmaVersion"] = StaticText("Firmware: " + bhVer + " " + bhRev)
 #		self["ImageVersion"] = StaticText("Image: " + about.getImageVersionString())
 		
@@ -39,8 +33,7 @@ class About(Screen):
 		self["KernelVersion"] =  StaticText(_("Kernel version: ") + self.getKernelVersionString())
 		
 		self["FPVersion"] = StaticText("Team Homesite: vuplus-community.net")
-#		self["COder"] = StaticText("Devlopeur: " + bhCod)
-		
+
 		self["CpuInfo"] =  StaticText(_("CPU: ") + self.getCPUInfoString())
 		self["TunerHeader"] = StaticText(_("Detected NIMs:"))
 		
