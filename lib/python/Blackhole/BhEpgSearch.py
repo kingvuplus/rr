@@ -67,6 +67,7 @@ class Nab_EpgSearch(Screen):
             self['list'].list = flist
         else:
             self.menTimer.start(100, False)
+        return
 
     def fill_List(self, title, desc, mypixmap, idx):
         png = LoadPixmap(mypixmap)
@@ -95,6 +96,7 @@ class Nab_EpgSearch(Screen):
             sserv = ServiceReference(fil[1])
             event = self.epgcache.lookupEventId(sserv.ref, int(fil[0]))
             self.session.open(EventViewSimple, event, sserv)
+        return
 
     def SearchNot(self):
         self.menTimer.stop()
