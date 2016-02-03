@@ -19,7 +19,7 @@ class ServiceStopScreen:
 		return pipavailable
 
 	def stopService(self):
-		self.oldref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		self.oldref = self.session.nav.getCurrentlyPlayingServiceReference()
 		self.session.nav.stopService()
 		if self.pipAvailable():
 			if self.session.pipshown: # try to disable pip
