@@ -55,7 +55,7 @@ class DeliteEpgPanel(Screen):
         self['lab1b'] = Label(_('Enable EIT Epg'))
         self['luinactive'] = Pixmap()
         self['luactive'] = Pixmap()
-        self['lab2'] = Label(_('Enable Epg Popup Notifications'))
+#        self['lab2'] = Label(_('Enable Epg Popup Notifications'))
         self['lpinactive'] = Pixmap()
         self['lpactive'] = Pixmap()
         self['lab3'] = Label(_('Enable Epg Buttons in Channel list'))
@@ -134,11 +134,11 @@ class DeliteEpgPanel(Screen):
             self['leinactive'].show()
         else:
             self['leactive'].show()
-        if config.misc.deliteepgpop.value == True:
-            self['luactive'].show()
-        else:
-            self['luinactive'].show()
-        self['labpath'].setText(myepgpath)
+#        if config.misc.deliteepgpop.value == True:
+#            self['luactive'].show()
+#        else:
+#            self['luinactive'].show()
+#        self['labpath'].setText(myepgpath)
         if config.misc.deliteepgbuttons.value == True:
             self['lpactive'].show()
         else:
@@ -330,7 +330,7 @@ class DeliteEpgGlobalSetup(Screen, ConfigListScreen):
         self.deliteepgdisabled = NoSave(ConfigYesNo(default=True))
         self.deliteepgeidisabled = NoSave(ConfigYesNo(default=True))
         self.show_eit_nownext = NoSave(ConfigYesNo(default=True))
-        self.delitepopdisabled = NoSave(ConfigYesNo(default=True))
+#        self.delitepopdisabled = NoSave(ConfigYesNo(default=True))
         self.deliteepgbuttons = NoSave(ConfigYesNo(default=True))
         my_tmp_path = config.misc.epgcache_filename.value
         self.myepg_path = NoSave(ConfigSelection(default='/hdd/epg.dat', choices=[(my_tmp_path, my_tmp_path),
@@ -348,7 +348,7 @@ class DeliteEpgGlobalSetup(Screen, ConfigListScreen):
         else:
             self.deliteepgeidisabled.value = True
         self.show_eit_nownext.value = config.usage.show_eit_nownext.value
-        self.delitepopdisabled.value = config.misc.deliteepgpop.value
+#        self.delitepopdisabled.value = config.misc.deliteepgpop.value
         self.deliteepgbuttons.value = config.misc.deliteepgbuttons.value
         self.myepg_path.value = my_tmp_path
         epg_disabled = getConfigListEntry(_('Enable OpenTv Epg Loader'), self.deliteepgdisabled)
@@ -357,8 +357,8 @@ class DeliteEpgGlobalSetup(Screen, ConfigListScreen):
         self.list.append(res)
         epgei_disabled = getConfigListEntry(_('Enable EIT Epg'), self.deliteepgeidisabled)
         self.list.append(epgei_disabled)
-        pop_disabled = getConfigListEntry(_('Enable Epg Popup Notifications'), self.delitepopdisabled)
-        self.list.append(pop_disabled)
+#        pop_disabled = getConfigListEntry(_('Enable Epg Popup Notifications'), self.delitepopdisabled)
+#        self.list.append(pop_disabled)
         epg_buttons = getConfigListEntry(_('Enable Epg Buttons in Channel list'), self.deliteepgbuttons)
         self.list.append(epg_buttons)
         epg_path = getConfigListEntry(_('Path to save Epg File'), self.myepg_path)
@@ -369,8 +369,8 @@ class DeliteEpgGlobalSetup(Screen, ConfigListScreen):
     def saveMyosd(self):
         config.usage.show_eit_nownext.value = self.show_eit_nownext.value
         config.usage.show_eit_nownext.save()
-        config.misc.deliteepgpop.value = self.delitepopdisabled.value
-        config.misc.deliteepgpop.save()
+#        config.misc.deliteepgpop.value = self.delitepopdisabled.value
+#        config.misc.deliteepgpop.save()
         config.misc.deliteepgbuttons.value = self.deliteepgbuttons.value
         config.misc.deliteepgbuttons.save()
         config.misc.epgcache_filename.value = self.myepg_path.value
@@ -965,10 +965,10 @@ class DeliteDownChannels(Screen):
          'ok': self.close})
         self.activityTimer = eTimer()
         self.activityTimer.timeout.get().append(self.startdownload)
-        self.oldpopconfig = config.misc.deliteepgpop.value
+#        self.oldpopconfig = config.misc.deliteepgpop.value
         self.oldchanref = None
-        config.misc.deliteepgpop.value = False
-        config.misc.deliteepgpop.save()
+#        config.misc.deliteepgpop.value = False
+#        config.misc.deliteepgpop.save()
         self.onLayoutFinish.append(self.startShow)
         self.onClose.append(self.__onClose)
         return
@@ -993,8 +993,8 @@ class DeliteDownChannels(Screen):
         self['lab1'].setText(_('Channels List Successfully Updated.'))
 
     def __onClose(self):
-        config.misc.deliteepgpop.value = self.oldpopconfig
-        config.misc.deliteepgpop.save()
+ #       config.misc.deliteepgpop.value = self.oldpopconfig
+ #       config.misc.deliteepgpop.save()
         if self.oldchanref:
             self.session.nav.playService(self.oldchanref)
         del self.activityTimer
@@ -1014,10 +1014,10 @@ class DeliteDownEpgNow(Screen):
          'ok': self.close})
         self.activityTimer = eTimer()
         self.activityTimer.timeout.get().append(self.startdownload)
-        self.oldpopconfig = config.misc.deliteepgpop.value
+#        self.oldpopconfig = config.misc.deliteepgpop.value
         self.oldchanref = None
-        config.misc.deliteepgpop.value = True
-        config.misc.deliteepgpop.save()
+#        config.misc.deliteepgpop.value = True
+#        config.misc.deliteepgpop.save()
         self.onLayoutFinish.append(self.startShow)
         self.onClose.append(self.__onClose)
         return
@@ -1119,8 +1119,8 @@ class DeliteDownEpgNow(Screen):
         return url
 
     def __onClose(self):
-        config.misc.deliteepgpop.value = self.oldpopconfig
-        config.misc.deliteepgpop.save()
+#        config.misc.deliteepgpop.value = self.oldpopconfig
+#        config.misc.deliteepgpop.save()
         if self.oldchanref:
             self.session.nav.playService(self.oldchanref)
         del self.activityTimer
