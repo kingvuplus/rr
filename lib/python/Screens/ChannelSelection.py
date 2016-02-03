@@ -11,6 +11,7 @@ from EpgSelection import EPGSelection
 from enigma import eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eEnv
 from Components.config import config, ConfigSubsection, ConfigText
 from Tools.NumericalTextInput import NumericalTextInput
+from Tools.Directories import fileExists
 #Blackhole Moded By SODO
 from Blackhole.BhEpgSearch import Nab_EpgSearch, Nab_EpgSearchLast
 from Components.PluginComponent import plugins
