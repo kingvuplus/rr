@@ -5,6 +5,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import getConfigListEntry, config, ConfigBoolean, ConfigNothing, ConfigSlider
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
+from gettext import pgettext
 
 from VideoHardware import video_hw
 
