@@ -7,6 +7,12 @@ datarootdir=@datarootdir@
 if [ -x @bindir@/showiframe ]; then
 	if [ -f @sysconfdir@/enigma2/backdrop.mvi ]; then
 		@bindir@/showiframe @sysconfdir@/enigma2/backdrop.mvi
+	elif [ -f @datadir@/backdrop.mvi ]; then
+		@bindir@/showiframe @datadir@/backdrop.mvi
+	elif [ -f @sysconfdir@/enigma2/bootlogo_wait.mvi ]; then
+		@bindir@/showiframe @sysconfdir@/enigma2/bootlogo_wait.mvi
+	elif [ -f @datadir@/bootlogo_wait.mvi ]; then
+		@bindir@/showiframe @datadir@/bootlogo_wait.mvi	
 	elif [ -f @sysconfdir@/enigma2/bootlogo.mvi ]; then
 		@bindir@/showiframe @sysconfdir@/enigma2/bootlogo.mvi
 	elif [ -f @datadir@/bootlogo.mvi ]; then
