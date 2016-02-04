@@ -15,6 +15,7 @@ from Screens.ChoiceBox import ChoiceBox
 from Screens.ServiceStopScreen import ServiceStopScreen
 from Screens.AutoDiseqc import AutoDiseqc
 from Tools.BoundFunction import boundFunction
+from gettext import pgettext
 
 from time import mktime, localtime
 from datetime import datetime
