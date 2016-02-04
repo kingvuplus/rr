@@ -21,4 +21,4 @@ install_PYTHON = \
 	Task.py Console.py ResourceManager.py TuneTest.py \
 	Keyboard.py Sensors.py FanControl.py HdmiCec.py \
 	Netlink.py InputHotplug.py \
-	opkg.py Gauge.py RcModel.py DreamInfoHandler.py
+	opkg.py Gauge.py RcModel.py DreamInfoHandler.py language_cache.py
