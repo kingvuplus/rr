@@ -1,6 +1,7 @@
 from enigma import eComponentScan, iDVBFrontend
 from Components.NimManager import nimmanager as nimmgr
 from Tools.Transponder import getChannelNumber
+from gettext import ngettext
 
 class ServiceScan:
 
