@@ -45,26 +45,28 @@ class PluginDescriptor:
 	# or return a function which is called with session and the interface name for extended setup of this interface
 	WHERE_NETWORKSETUP = 10
 	
+	WHERE_NETWORKMOUNTS = 11
+	
 	# show up this plugin (or a choicebox with all of them) for long INFO keypress
 	# or return a function which is called with session and the interface name for extended setup of this interface
-	WHERE_EVENTINFO = 11
+	WHERE_EVENTINFO = 12
 
 	# reason (True: Networkconfig read finished, False: Networkconfig reload initiated )
-	WHERE_NETWORKCONFIG_READ = 12
+	WHERE_NETWORKCONFIG_READ = 13
 
-	WHERE_AUDIOMENU = 13
+	WHERE_AUDIOMENU = 14
 
 	# fnc 'SoftwareSupported' or  'AdvancedSoftwareSupported' must take a parameter and return None
 	# if the plugin should not be displayed inside Softwaremanger or return a function which is called with session
 	# and 'None' as parameter to call the plugin from the Softwaremanager menus. "menuEntryName" and "menuEntryDescription"
 	# should be provided to name and describe the new menu entry.
-	WHERE_SOFTWAREMANAGER = 14
+	WHERE_SOFTWAREMANAGER = 15
 
-	WHERE_SATCONFIGCHANGED = 15
+	WHERE_SATCONFIGCHANGED = 16
 
-	WHERE_SERVICESCAN = 16
+	WHERE_SERVICESCAN = 17
 
-	WHERE_EXTENSIONSINGLE = 17
+	WHERE_EXTENSIONSINGLE = 18
 
 
 	def __init__(self, name = "Plugin", where = [ ], description = "", icon = None, fnc = None, wakeupfnc = None, needsRestart = None, internal = False, weight = 0):
