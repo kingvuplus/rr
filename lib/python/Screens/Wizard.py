@@ -45,6 +45,8 @@ class WizardSummary(Screen):
 		self["text"].setText(text)
 
 class Wizard(Screen):
+	instance = None
+	
 	def createSummary(self):
 			print "WizardCreateSummary"
 			return WizardSummary
