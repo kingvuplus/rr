@@ -193,7 +193,6 @@ data/countries/Makefile
 data/extensions/Makefile
 data/keymaps/Makefile
 data/hw_info/Makefile
-data/rc_models/Makefile
 include/Makefile
 lib/Makefile
 lib/base/eenv.cpp
